@@ -21,12 +21,12 @@ public:
 		MaxMonsterType
 
 	};
-	//constructor to intilize obejects
-	Monster(Monstertype type, std::string name, std::string roar, int hits)
+	// constructor to intilize obejects
+	Monster(Monstertype type, std::string_view name, std::string_view roar, int hits)
 		: m_type{type}, m_name{name}, m_roar{roar}, m_hitpoints{hits}
 	{
 	}
-	//function, checks for an enum type and return string of that enum type.
+	// function, checks for an enum type and return string of that enum type.
 	std::string getTypeString(Monstertype monsters)
 	{
 		switch (monsters)
@@ -64,7 +64,12 @@ public:
 	}
 	void print()
 	{
-		std::cout << m_name << "the" << getTypeString(m_type) << "has" << m_hitpoints << "hit points and says" << m_roar << '\n';
+		std::cout << m_name << "the" << getTypeString(m_type)
+		 << "has" << m_hitpoints << "hit points and says" << m_roar << '\n';
+	}
+	static Monster getname(Monster monster)
+	{
+		return monster;
 	}
 
 private:
@@ -73,14 +78,63 @@ private:
 	std::string m_roar{"???"};
 	int m_hitpoints{};
 };
+//
+
+namespace MonsterGenerator
+{
+	std::string_view getName(int n)
+	{
+		switch (n)
+		{
+		case 0:
+			return "Blarg";
+		case 1:
+			return "Moog";
+		case 2:
+			return "Pksh";
+		case 3:
+			return "Tyrn";
+		case 4:
+			return "Mort";
+		case 5:
+			return "Hans";
+		default:
+			return "???";
+		}
+	}
+
+	std::string_view getRoar(int n)
+	{
+		switch (n)
+		{
+		case 0:
+			return "*ROAR*";
+		case 1:
+			return "*peep*";
+		case 2:
+			return "*squeal*";
+		case 3:
+			return "*whine*";
+		case 4:
+			return "*growl*";
+		case 5:
+			return "*burp*";
+		default:
+			return "???";
+		}
+	}
+
+	Monster generate()
+	{
+		return Monster {Monster::Skeleton, getName(0), getRoar(0), 4};
+	}
+
+};
 
 int main()
 {
-	Monster skeleton{ Monster::Skeleton, "Bones", "*rattle*", 4 };
-	skeleton.print();
-
-	Monster vampire{ Monster::Vampire, "Nibblez", "*hiss*", 0 };
-	vampire.print();
+	Monster m{MonsterGenerator::generate()};
+	m.print();
 
 	return 0;
 }
